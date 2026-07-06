@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventos Escolares · InfoTurmas</title>
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (gratuito) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ========== RESET E BASE ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f4fa;
+      color: #0b1e33;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1200px;
+      width: 100%;
+      background: white;
+      border-radius: 2.5rem;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+      padding: 2rem 2rem 2.2rem;
+    }
+
+    /* ========== TOPO ========== */
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #eef2f6;
+      padding-bottom: 1.2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo i {
+      font-size: 2.2rem;
+      color: #2563eb;
+      background: #dbeafe;
+      padding: 10px;
+      border-radius: 18px;
+    }
+    .logo h1 {
+      font-weight: 700;
+      font-size: 1.9rem;
+      letter-spacing: -0.5px;
+      color: #0b1e33;
+    }
+    .logo h1 span {
+      color: #2563eb;
+    }
+
+    .user-chip {
+      background: #f1f5f9;
+      padding: 0.6rem 1.4rem 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #1e293b;
+    }
+    .user-chip i {
+      color: #2563eb;
+      font-size: 1.3rem;
+    }
+
+    /* ========== FILTRO RÁPIDO (AVISOS) ========== */
+    .alert-bar {
+      background: #eef6ff;
+      border-radius: 60px;
+      padding: 0.7rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      border: 1px solid #dbeafe;
+    }
+    .alert-bar i {
+      color: #2563eb;
+      font-size: 1.2rem;
+    }
+    .alert-bar .badge-aviso {
+      background: #2563eb;
+      color: white;
+      border-radius: 40px;
+      padding: 0.1rem 1rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+    .alert-bar span {
+      font-weight: 500;
+    }
+
+    /* ========== GRADE DE EVENTOS ========== */
+    .grid-eventos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ========== CARD DE EVENTO ========== */
+    .card-evento {
+      background: #ffffff;
+      border-radius: 1.8rem;
+      padding: 1.5rem 1.6rem 1.8rem;
+      border: 1px solid #e9edf2;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      transition: box-shadow 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-evento:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border-color: #b9d0f0;
+    }
+
+    .evento-tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e4f8a;
+      font-weight: 600;
+      font-size: 0.7rem;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
+      align-self: flex-start;
+      margin-bottom: 0.6rem;
+    }
+
+    .evento-tag.passeio {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .evento-tag.gincana {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .evento-tag.festa {
+      background: #fce7f3;
+      color: #9d174d;
+    }
+
+    .evento-titulo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #0b1e33;
+    }
+
+    .evento-desc {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .evento-detalhes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.2rem;
+      background: #f8fafc;
+      padding: 0.7rem 1rem;
+      border-radius: 60px;
+      margin: 0.5rem 0 0.8rem;
+      font-size: 0.9rem;
+    }
+    .evento-detalhes i {
+      color: #2563eb;
+      width: 1.2rem;
+    }
+    .evento-detalhes span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .evento-extra {
+      margin-top: auto;
+      border-top: 1px solid #eef2f6;
+      padding-top: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .evento-extra .turmas {
+      background: #f1f5f9;
+      border-radius: 40px;
+      padding: 0.2rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .btn-info {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.3rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: default;
+    }
+
+    /* ========== AVISOS E COMUNICADOS ========== */
+    .avisos-section {
+      margin-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1.8rem;
+    }
+
+    .avisos-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #0b1e33;
+      margin-bottom: 1.2rem;
+    }
+    .avisos-header i {
+      color: #2563eb;
+      font-size: 1.6rem;
+    }
+
+    .grid-avisos {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .aviso-item {
+      background: #fafcff;
+      border-radius: 1.2rem;
+      padding: 0.9rem 1.2rem;
+      border-left: 5px solid #2563eb;
+      border: 1px solid #e9edf2;
+      border-left-width: 6px;
+      transition: background 0.15s;
+    }
+    .aviso-item:hover {
+      background: #f0f6ff;
+    }
+    .aviso-item .aviso-titulo {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .aviso-item .aviso-data {
+      font-size: 0.75rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .aviso-item .aviso-data i {
+      color: #2563eb;
+    }
+
+    /* ========== RESPONSIVO ========== */
+    @media (max-width: 850px) {
+      .grid-eventos {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .grid-avisos {
+        grid-template-columns: 1fr 1fr;
+      }
+      .app {
+        padding: 1.5rem;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: start;
+        gap: 1rem;
+      }
+      .logo h1 {
+        font-size: 1.7rem;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .grid-avisos {
+        grid-template-columns: 1fr;
+      }
+      .evento-detalhes {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+        border-radius: 1.2rem;
+      }
+      .alert-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        border-radius: 1.5rem;
+      }
+      .btn-info {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* ========== EXTRAS ========== */
+    .badge-aviso {
+      background: #2563eb;
+      color: white;
+      border-radius: 40px;
+      padding: 0.1rem 1rem;
+      font-weight: 600;
+      font-size: 0.7rem;
+    }
+    .mt-1 { margin-top: 0.5rem; }
+    .d-flex { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- TOPO -->
+  <div class="top-bar">
+    <div class="logo">
+      <i class="fas fa-calendar-check"></i>
+      <h1>Info<span>Adaile</span></h1>
+    </div>
+    <div class="user-chip">
+      <i class="fas fa-users"></i> 
+      <span>Secretaria Escolar</span>
+      <span style="opacity:0.3; margin:0 4px;">|</span>
+      <span style="font-weight:400; font-size:0.8rem;">Atualizado hoje</span>
+    </div>
+  </div>
+
+  <!-- BARRA DE AVISO DESTAQUE -->
+  <div class="alert-bar">
+    <div class="d-flex">
+      <i class="fas fa-bullhorn"></i>
+      <span><strong>Comunicado:</strong> Inscrições para a Gincadaile até 15/08</span>
+    </div>
+    <div class="d-flex">
+      <span class="badge-aviso"><i class="far fa-clock"></i> Novidade</span>
+      <span style="font-size:0.8rem; opacity:0.7;"><i class="fas fa-chevron-right"></i> 2 novos avisos</span>
+    </div>
+  </div>
+
+  <!-- GRADE DE EVENTOS PRINCIPAIS -->
+  <div class="grid-eventos">
+
+    <!-- CARD 1: Interclasse de Futsal -->
+    <div class="card-evento">
+      <span class="evento-tag"><i class="fas fa-futbol"></i> Interclasse</span>
+      <div class="evento-titulo">Interclasse de Futsal</div>
+      <div class="evento-desc">Competição entre turmas do ensino médio.</div>
+      <div class="evento-detalhes">
+        <span><i class="far fa-calendar-alt"></i> 20/08</span>
+        <span><i class="far fa-clock"></i> 10:20 – 12:30</span>
+        <span><i class="fas fa-location-dot"></i> Ginásio</span>
+      </div>
+      <div class="evento-extra">
+        <span class="turmas"><i class="fas fa-tag"></i> 1ºA · 2ºB · 3ºC</span>
+        <div class="btn-info"><i class="fas fa-info-circle"></i> Ver mais</div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Festa Junina -->
+    <div class="card-evento">
+      <span class="evento-tag festa"><i class="fas fa-festival"></i> Festa</span>
+      <div class="evento-titulo">Festa Junina</div>
+      <div class="evento-desc">Arraial com comidas típicas, quadrilha e música ao vivo.</div>
+      <div class="evento-detalhes">
+        <span><i class="far fa-calendar-alt"></i> 28/06</span>
+        <span><i class="far fa-clock"></i> 19:00 – 22:30</span>
+        <span><i class="fas fa-location-dot"></i> Pátio coberto</span>
+      </div>
+      <div class="evento-extra">
+        <span class="turmas"><i class="fas fa-tag"></i> Todas as turmas</span>
+        <div class="btn-info"><i class="fas fa-info-circle"></i> Ver mais</div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Gincanaile -->
+    <div class="card-evento">
+      <span class="evento-tag gincana"><i class="fas fa-flag-checkered"></i> Gincana</span>
+      <div class="evento-titulo">Gincadaile 2026</div>
+      <div class="evento-desc">Gincana cultural com provas de conhecimento, esporte e criatividade.</div>
+      <div class="evento-detalhes">
+        <span><i class="far fa-calendar-alt"></i> 12/09</span>
+        <span><i class="far fa-clock"></i> 08:00 – 17:00</span>
+        <span><i class="fas fa-location-dot"></i> Quadra e salas</span>
+      </div>
+      <div class="evento-extra">
+        <span class="turmas"><i class="fas fa-tag"></i> 6º ao 9º ano</span>
+        <div class="btn-info"><i class="fas fa-info-circle"></i> Ver mais</div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Passeio das turmas – 8º ano -->
+    <div class="card-evento">
+      <span class="evento-tag passeio"><i class="fas fa-bus"></i> Passeio</span>
+      <div class="evento-titulo">Passeio: Parque da Cidade</div>
+      <div class="evento-desc">Visita educativa ao parque com atividades de campo.</div>
+      <div class="evento-detalhes">
+        <span><i class="far fa-calendar-alt"></i> 05/09</span>
+        <span><i class="far fa-clock"></i> 08:30 – 14:00</span>
+        <span><i class="fas fa-location-dot"></i> Parque da Cidade</span>
+      </div>
+      <div class="evento-extra">
+        <span class="turmas"><i class="fas fa-tag"></i> 8ºA · 8ºB</span>
+        <div class="btn-info"><i class="fas fa-info-circle"></i> Ver mais</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SEÇÃO DE AVISOS E COMUNICADOS -->
+  <div class="avisos-section">
+    <div class="avisos-header">
+      <i class="fas fa-megaphone"></i>
+      <span>Avisos e comunicados</span>
+      <span style="background:#dbeafe; font-size:0.7rem; padding:0.1rem 1rem; border-radius:40px; font-weight:500;">+ 3 novos</span>
+    </div>
+
+    <div class="grid-avisos">
+      <div class="aviso-item">
+        <div class="aviso-titulo"><i class="fas fa-futbol" style="color:#2563eb;"></i> Inscrições Interclasse</div>
+        <div class="aviso-data"><i class="far fa-calendar-alt"></i> Até 18/08 · Secretaria</div>
+      </div>
+      <div class="aviso-item">
+        <div class="aviso-titulo"><i class="fas fa-umbrella" style="color:#2563eb;"></i> Festa Junina – ensaios</div>
+        <div class="aviso-data"><i class="far fa-calendar-alt"></i> 24/06 · 15:00 no pátio</div>
+      </div>
+      <div class="aviso-item">
+        <div class="aviso-titulo"><i class="fas fa-flag" style="color:#2563eb;"></i> Gincadaile – equipes</div>
+        <div class="aviso-data"><i class="far fa-calendar-alt"></i> Formar equipes até 05/09</div>
+      </div>
+      <div class="aviso-item">
+        <div class="aviso-titulo"><i class="fas fa-bus" style="color:#2563eb;"></i> Passeio 8º ano – autorização</div>
+        <div class="aviso-data"><i class="far fa-calendar-alt"></i> Entregar até 30/08</div>
+      </div>
+      <div class="aviso-item">
+        <div class="aviso-titulo"><i class="fas fa-medal" style="color:#2563eb;"></i> Resultados Interclasse</div>
+        <div class="aviso-data"><i class="far fa-calendar-alt"></i> Divulgação 25/08</div>
+      </div>
+      <div class="aviso-item">
+        <div class="aviso-titulo"><i class="fas fa-music" style="color:#2563eb;"></i> Apresentação Festa Junina</div>
+        <div class="aviso-data"><i class="far fa-calendar-alt"></i> Ensaios: terças e quintas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ / INFO EXTRA -->
+  <div style="margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; color: #475569; font-size: 0.9rem;">
+    <div>
+      <i class="fas fa-school" style="color:#2563eb;"></i> 
+      <span>InfoEventos · organização escolar</span>
+    </div>
+    <div class="d-flex" style="gap:12px;">
+      <span><i class="fas fa-calendar-week"></i> 6 eventos este mês</span>
+      <span><i class="fas fa-bell" style="color:#2563eb;"></i> 3 avisos não lidos</span>
+    </div>
+    <div style="background:#f1f5f9; padding:0.2rem 1.2rem; border-radius:40px; font-weight:500;">
+      <i class="fas fa-arrow-right"></i> Fique por dentro
+    </div>
+  </div>
+
+</div>
+<!-- fim .app -->
+
+</body>
+</html>
